@@ -6,7 +6,7 @@ const connectDB = require("./config/db");
 const investorRoutes = require("./routes/InvestorRoutes");
 const careerRoutes = require("./routes/careerRoutes");
 const projectRoutes = require("./routes/projectRoutes");
-const authRoutes = require("./routes/AuthRoutes");
+const authRoutes = require("./routes/authRoutes");
 const path = require("path");
 
 
