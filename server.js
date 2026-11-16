@@ -13,7 +13,21 @@ const path = require("path");
 connectDB();
 const app = express();
 
-app.use(cors());
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // No origin = Postman / server-to-server, allow it.
+      // Otherwise the website must be on the allowed list.
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      cb(null, false);
+    },
+  })
+);
 // app.use(express.json());
 app.use(express.json({ limit: "10mb" }));
 app.use("/api/investor", investorRoutes);

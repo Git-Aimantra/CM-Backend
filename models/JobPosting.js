@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const COMPANIES = require("../config/companies");
 
 const jobPostingSchema = new mongoose.Schema(
     {
@@ -21,9 +22,15 @@ const jobPostingSchema = new mongoose.Schema(
         requirements: {
             type: [String], // e.g. ["Bachelor's degree in Computer Science", "3+ years of experience"]
         },
-        company: {
+         company: {
             type: String,
             required: true, // e.g. "TechCorp Inc."
+        },
+        companyId: {
+            type: String,
+            required: true,
+            enum: COMPANIES,
+            index: true, // makes filtering by company fast
         },
         postedDate: {
             type: Date,

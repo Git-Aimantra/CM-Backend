@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
 const protect = require("../middleware/authMiddleware");
+const onlyCompany = require("../middleware/onlyCompany");
 
 
 // CREATE — add a new project
 // POST http://localhost:5000/api/projects
-router.post("/", protect, async (req, res) => {
+router.post("/", protect, onlyCompany("civilmantra"), async (req, res) => {
   try {
     const newProject = new Project(req.body);
     const savedProject = await newProject.save();
@@ -29,7 +30,7 @@ router.get("/",  async (req, res) => {
 
 // UPDATE — edit an existing project by its ID
 // PUT http://localhost:5000/api/projects/:id
-router.put("/:id", protect, async (req, res) => {
+router.put("/:id", protect, onlyCompany("civilmantra"), async (req, res) => {
   try {
     const updatedProject = await Project.findByIdAndUpdate(
       req.params.id,
@@ -49,7 +50,7 @@ router.put("/:id", protect, async (req, res) => {
 
 // DELETE — remove a project by its ID
 // DELETE http://localhost:5000/api/projects/:id
-router.delete("/:id", protect, async (req, res) => {
+router.delete("/:id", protect, onlyCompany("civilmantra"), async (req, res) => {
   try {
     const deletedProject = await Project.findByIdAndDelete(req.params.id);
 

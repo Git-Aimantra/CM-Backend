@@ -3,10 +3,11 @@ const router = express.Router();
 const InvestorDoc = require("../models/InvestorDoc");
 const protect = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
+const onlyCompany = require("../middleware/onlyCompany");
 
 // CREATE — add a new investor document with a PDF file
 // POST http://localhost:5000/api/investor
-router.post("/", protect, upload.single("file"), async (req, res) => {
+router.post("/", protect, onlyCompany("civilmantra"), upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "PDF file is required" });
@@ -39,7 +40,7 @@ router.get("/", async (req, res) => {
 });
 
 // DELETE — remove an investor document by its ID
-router.delete("/:id", protect, async (req, res) => {
+router.delete("/:id", protect, onlyCompany("civilmantra"), async (req, res) => {
   try {
     const deletedDoc = await InvestorDoc.findByIdAndDelete(req.params.id);
     if (!deletedDoc) {
